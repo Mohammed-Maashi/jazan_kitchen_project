@@ -1,0 +1,43 @@
+{% extends "shop/base.html" %}
+{% block title %}{{ product.name }} | {{ store_name }}{% endblock %}
+
+{% block content %}
+<div class="card card-soft overflow-hidden">
+  <div class="row g-0">
+    <div class="col-md-5">
+      {% if product.image %}
+        <img
+          src="{{ product.image.url }}"
+          class="img-fluid h-100 w-100"
+          style="object-fit:cover;"
+          alt="{{ product.name }}"
+        >
+      {% else %}
+        <img
+          src="https://source.unsplash.com/featured/1200x800/?{{ product.name|urlencode }}&sig={{ product.id }}"
+          class="img-fluid h-100 w-100"
+          style="object-fit:cover;"
+          alt="{{ product.name }}"
+        >
+      {% endif %}
+    </div>
+
+    <div class="col-md-7">
+      <div class="card-body p-4">
+        <h3 class="fw-extrabold mb-2">{{ product.name }}</h3>
+
+        {% if product.description %}
+          <p class="text-muted">{{ product.description }}</p>
+        {% else %}
+          <p class="text-muted">وصف المنتج غير متوفر حالياً.</p>
+        {% endif %}
+
+        <div class="d-flex align-items-center justify-content-between mt-3">
+          <div class="price-lg">{{ product.price }} ر.س</div>
+          <a class="btn btn-primary px-4" href="{% url 'cart_add' product.id %}">إضافة للسلة</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

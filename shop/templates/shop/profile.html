@@ -1,0 +1,10 @@
+{% extends "shop/base.html" %}
+{% block title %}Profile | {{ store_name }}{% endblock %}
+
+{% block content %}
+<div class="card card-soft p-4">
+  <h4 class="fw-bold mb-3">الملف الشخصي</h4>
+  <div class="mb-2">اسم المستخدم: <b>{{ u.username }}</b></div>
+  <div>البريد الإلكتروني: <b>{{ u.email }}</b></div>
+</div>
+{% endblock %}

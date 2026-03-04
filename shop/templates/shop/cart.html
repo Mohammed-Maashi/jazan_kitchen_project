@@ -1,0 +1,57 @@
+{% extends "shop/base.html" %}
+{% block title %}السلة | {{ store_name }}{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+  <div>
+    <h4 class="fw-extrabold mb-1">سلة الطلب</h4>
+    <div class="text-muted small">تحكم في الكميات قبل إتمام الطلب.</div>
+  </div>
+  <a href="{% url 'home' %}" class="btn btn-outline-dark btn-sm">متابعة التسوق</a>
+</div>
+
+<div class="card card-soft p-3 p-md-4">
+  {% if items %}
+    <ul class="list-group list-group-flush">
+      {% for it in items %}
+      <li class="list-group-item py-3">
+        <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+          <div class="d-flex align-items-center gap-3">
+            {% if it.product.image %}
+              <img src="{{ it.product.image.url }}" alt="{{ it.product.name }}"
+                   style="width:64px;height:64px;object-fit:cover;border-radius:14px;">
+            {% endif %}
+            <div>
+              <div class="fw-bold">{{ it.product.name }}</div>
+              <div class="small text-muted">سعر الوحدة: {{ it.product.price }} ر.س</div>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center gap-2">
+            <a class="btn btn-outline-secondary btn-sm" href="{% url 'cart_decrease' it.product.id %}">-</a>
+            <span class="px-2 fw-bold">{{ it.qty }}</span>
+            <a class="btn btn-outline-secondary btn-sm" href="{% url 'cart_add' it.product.id %}">+</a>
+            <a class="btn btn-outline-danger btn-sm" href="{% url 'cart_remove' it.product.id %}">حذف</a>
+          </div>
+
+          <div class="fw-extrabold">{{ it.line_total }} ر.س</div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <div class="d-flex justify-content-between align-items-center pt-3">
+      <span class="text-muted">الإجمالي</span>
+      <span class="fw-extrabold fs-5">{{ total }} ر.س</span>
+    </div>
+
+    <div class="d-flex gap-2 mt-3">
+      <a href="{% url 'checkout' %}" class="btn btn-primary px-4">إتمام الطلب</a>
+      <a href="{% url 'cart_clear' %}" class="btn btn-outline-danger px-4">تفريغ السلة</a>
+    </div>
+  {% else %}
+    <div class="text-muted">السلة فارغة.</div>
+    <a href="{% url 'home' %}" class="btn btn-primary mt-3">العودة للمنتجات</a>
+  {% endif %}
+</div>
+{% endblock %}

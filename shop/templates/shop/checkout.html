@@ -1,0 +1,86 @@
+{% extends "shop/base.html" %}
+{% block title %}إتمام الطلب | {{ store_name }}{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+  <div>
+    <h4 class="fw-extrabold mb-1">إتمام الطلب</h4>
+    <div class="text-muted small">راجع طلبك ثم أدخل بياناتك لاستلام الفاتورة عبر البريد الإلكتروني.</div>
+  </div>
+  <a href="{% url 'home' %}" class="btn btn-outline-dark btn-sm">الرجوع للمنتجات</a>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="card card-soft p-3 p-md-4 mb-3">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="fw-bold m-0">المنتجات المختارة</h6>
+        {% if items %}
+          <span class="badge text-bg-light border">عدد العناصر: {{ items|length }}</span>
+        {% endif %}
+      </div>
+
+      {% if items %}
+        <ul class="list-group list-group-flush">
+          {% for it in items %}
+          <li class="list-group-item py-3">
+            <div class="d-flex justify-content-between align-items-start gap-3">
+              <div class="d-flex gap-3 align-items-start">
+                {% if it.product.image %}
+                  <img src="{{ it.product.image.url }}" alt="{{ it.product.name }}"
+                       style="width:64px;height:64px;object-fit:cover;border-radius:14px;">
+                {% endif %}
+                <div>
+                  <div class="fw-bold">{{ it.product.name }}</div>
+                  <div class="small text-muted">الكمية: {{ it.qty }}</div>
+                </div>
+              </div>
+
+              <div class="text-end">
+                <div class="fw-bold">{{ it.line_total }} ر.س</div>
+                <div class="small text-muted">{{ it.product.price }} ر.س للوحدة</div>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+
+        <div class="d-flex justify-content-between align-items-center pt-3">
+          <span class="text-muted">الإجمالي</span>
+          <span class="fw-extrabold fs-5">{{ total }} ر.س</span>
+        </div>
+      {% else %}
+        <div class="text-muted">السلة فارغة. ارجع للمنتجات وأضف عناصر.</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="card card-soft p-3 p-md-4">
+      <h6 class="fw-bold mb-3">معلومات إتمام الطلب</h6>
+
+      <form method="post">
+        {% csrf_token %}
+        <div class="row g-2">
+          <div class="col-12">
+            <label class="form-label small text-muted mb-1">اسم الزبون</label>
+            <input name="customer_name" class="form-control" placeholder="اكتب الاسم الكامل" required>
+          </div>
+          <div class="col-12">
+            <label class="form-label small text-muted mb-1">البريد الإلكتروني</label>
+            <input name="customer_email" type="email" class="form-control" placeholder="example@email.com" required>
+          </div>
+        </div>
+
+        <div class="alert alert-light border mt-3 mb-0 small text-muted">
+          سيتم إرسال <b>فاتورة PDF</b> إلى بريدك الإلكتروني بعد تأكيد الطلب.
+        </div>
+
+        <button class="btn btn-primary w-100 mt-3 py-2 fw-bold" {% if not items %}disabled{% endif %}>
+          إتمام الطلب واستلام الفاتورة عبر البريد الإلكتروني
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

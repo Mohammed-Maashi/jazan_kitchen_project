@@ -1,0 +1,21 @@
+{% extends "shop/base.html" %}
+{% block title %}تواصل | {{ store_name }}{% endblock %}
+
+{% block content %}
+<h4 class="fw-bold mb-3">تواصل معنا</h4>
+
+{% if sent %}
+<div class="alert alert-success">تم إرسال رسالة تأكيد إلى بريدك عبر Gmail ✅</div>
+{% endif %}
+
+<form method="post" class="card card-soft p-3 p-md-4">
+  {% csrf_token %}
+  <div class="row g-2">
+    <div class="col-md-6"><input name="name" class="form-control" placeholder="الاسم" required></div>
+    <div class="col-md-6"><input name="email" type="email" class="form-control" placeholder="البريد الإلكتروني" required></div>
+    <div class="col-12"><input name="subject" class="form-control" placeholder="موضوع الرسالة" required></div>
+    <div class="col-12"><textarea name="message" class="form-control" rows="5" placeholder="محتوى الرسالة" required></textarea></div>
+  </div>
+  <button class="btn btn-primary mt-3 px-4">إرسال</button>
+</form>
+{% endblock %}

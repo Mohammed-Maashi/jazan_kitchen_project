@@ -1,0 +1,81 @@
+{% extends "shop/base.html" %}
+{% block title %}الرئيسية | {{ store_name }}{% endblock %}
+
+{% block content %}
+
+<section class="hero p-4 p-md-5 mb-4">
+  <div class="row align-items-center g-3">
+
+    <div class="col-md-7">
+      <h1 class="fw-extrabold mb-2">مطبخ جازان الإلكتروني</h1>
+
+      <p class="text-muted mb-3">
+        مأكولات شعبية من منطقة جازان — طازجة، لذيذة، وأسعار واضحة.
+      </p>
+
+      <div class="d-flex gap-2">
+        <a class="btn btn-primary px-4" href="#products">تصفح القائمة</a>
+        <a class="btn btn-outline-dark px-4" href="{% url 'checkout' %}">سلة الطلب</a>
+      </div>
+    </div>
+
+    <div class="col-md-5 text-center">
+      <div class="badge-soft p-3">
+        <div class="fw-bold">أطباق جازانية أصيلة</div>
+        <div class="small text-muted">نكهة • جودة • توصيل</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+  <h4 id="products" class="fw-bold mb-0">المنتجات</h4>
+  <div class="small text-muted">تم اختيار الأطباق بعناية لتجربة طلب أفضل</div>
+</div>
+
+<div class="row g-3">
+
+  {% for p in products %}
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card card-soft h-100 overflow-hidden">
+
+        {% if p.image %}
+          <img src="{{ p.image.url }}" class="card-img-top product-img" alt="{{ p.name }}">
+        {% else %}
+          <img
+            src="https://source.unsplash.com/1200x800/?{{ p.name|urlencode }},saudi,food,traditional"
+            class="card-img-top product-img"
+            alt="{{ p.name }}"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+            onerror="this.onerror=null; this.src='https://source.unsplash.com/1200x800/?saudi,food,traditional';"
+          >
+        {% endif %}
+
+        <div class="card-body d-flex flex-column">
+
+          <div class="d-flex justify-content-between align-items-start gap-2">
+            <h5 class="card-title fw-bold mb-2">{{ p.name }}</h5>
+          </div>
+
+          {% if p.description %}
+            <p class="card-text text-muted small mb-3">{{ p.description|truncatechars:110 }}</p>
+          {% else %}
+            <p class="card-text text-muted small mb-3">وصف الطبق غير متوفر حالياً.</p>
+          {% endif %}
+
+          <div class="d-flex justify-content-between align-items-center mt-auto">
+            <span class="price fw-bold">{{ p.price }} ر.س</span>
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'product_detail' p.id %}">التفاصيل</a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  {% endfor %}
+
+</div>
+
+{% endblock %}
